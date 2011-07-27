@@ -164,7 +164,7 @@ public class ServletServer
                         constraint.setAuthenticate( true );
 
                         ConstraintMapping constraintMapping = new ConstraintMapping();
-                        constraintMapping.setPathSpec( "/*" );
+                        constraintMapping.setPathSpec( webappContext.getAuthenticationInfo().getAuthPathSpec() );
                         constraintMapping.setConstraint( constraint );
 
                         context.getSecurityHandler().setUserRealm( userRealm );

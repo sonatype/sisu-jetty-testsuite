@@ -25,6 +25,8 @@ public class AuthenticationInfo
 
     private String credentialsFilePath;
 
+    private String authPathSpec = "/*";
+
     public String getAuthMethod()
     {
         return authMethod;
@@ -45,4 +47,13 @@ public class AuthenticationInfo
         this.credentialsFilePath = credentialsFile;
     }
 
+    public String getAuthPathSpec()
+    {
+        return authPathSpec;
+    }
+
+    public void setAuthPathSpec( String authPathSpec )
+    {
+        this.authPathSpec = authPathSpec;
+    }
 }
