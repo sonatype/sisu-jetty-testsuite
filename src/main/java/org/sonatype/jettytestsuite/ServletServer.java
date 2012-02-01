@@ -12,6 +12,7 @@
  */
 package org.sonatype.jettytestsuite;
 
+import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,6 @@ import org.mortbay.jetty.security.Constraint;
 import org.mortbay.jetty.security.ConstraintMapping;
 import org.mortbay.jetty.security.HashUserRealm;
 import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.Dispatcher;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
 
@@ -243,6 +243,24 @@ public class ServletServer
         try
         {
             getServer().start();
+
+            // NEXUS-4809 make sure all is well, port is open
+            final long start = System.currentTimeMillis();
+            boolean success = false;
+            final int port = getPort();
+            while ( !success && System.currentTimeMillis() - start < 10000 )
+            {
+                try {
+                    Socket socket = new Socket( "127.0.0.1", port );
+                    socket.close();
+                    return;
+                }
+                catch (Throwable t)
+                {
+                    Thread.sleep( 500 );
+                }
+            }
+            throw new IllegalStateException( String.format( "Port %s did not open in 10s", port ) );
         }
         catch ( Exception e )
         {
