@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.sonatype.spice</groupId>
     <artifactId>spice-parent</artifactId>
-    <version>15</version>
+    <version>16</version>
   </parent>
   <groupId>org.sonatype.plexus</groupId>
   <artifactId>plexus-jetty-testsuite</artifactId>
@@ -34,5 +34,29 @@
       <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.2.2</version>
+          <configuration>
+            <!--  here to prevent hang see MGPG-9 -->
+            <mavenExecutorId>forked-path</mavenExecutorId>
+            <useReleaseProfile>false</useReleaseProfile>
+            <goals>deploy</goals>
+            <arguments>-Prelease -Dgpg.passphrase=${gpg.passphrase}</arguments>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.4</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>
