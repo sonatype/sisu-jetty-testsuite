@@ -7,7 +7,7 @@
   </parent>
   <groupId>org.sonatype.plexus</groupId>
   <artifactId>plexus-jetty-testsuite</artifactId>
-  <version>1.8</version>
+  <version>1.9-SNAPSHOT</version>
   <name>Plexus Jetty Testsuite</name>
 
   <scm>
