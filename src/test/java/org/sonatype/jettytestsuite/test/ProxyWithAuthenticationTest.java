@@ -27,10 +27,10 @@ import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.eclipse.jetty.util.B64Code;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mortbay.jetty.security.B64Code;
 import org.sonatype.jettytestsuite.ProxyServer;
 
 public class ProxyWithAuthenticationTest

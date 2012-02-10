@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.plexus.util.IOUtil;
-import org.mortbay.jetty.Request;
-import org.mortbay.jetty.handler.AbstractHandler;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 
 public class KeyHandler
     extends AbstractHandler
@@ -48,7 +48,7 @@ public class KeyHandler
         keys.put( ( "0x" + Long.toHexString( key ) ).toLowerCase(), content );
     }
 
-    public void handle( String target, HttpServletRequest request, HttpServletResponse response, int dispatch )
+    public void handle( String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response )
         throws IOException, ServletException
     {
         String key = request.getParameter( "search" );
