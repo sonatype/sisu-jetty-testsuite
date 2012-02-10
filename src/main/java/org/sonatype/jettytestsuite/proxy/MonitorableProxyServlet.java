@@ -24,15 +24,16 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mortbay.jetty.Request;
-import org.mortbay.jetty.security.B64Code;
-import org.mortbay.proxy.AsyncProxyServlet;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.servlets.ProxyServlet;
+import org.eclipse.jetty.util.B64Code;
+import org.eclipse.jetty.util.StringUtil;
 
 /**
  *
  */
 public class MonitorableProxyServlet
-    extends AsyncProxyServlet
+    extends ProxyServlet
 {
 
     private List<String> accessedUris;
@@ -99,7 +100,7 @@ public class MonitorableProxyServlet
             if ( proxyAuthorization != null && proxyAuthorization.startsWith( "Basic " ) )
             {
                 String proxyAuth = proxyAuthorization.substring( 6 );
-                String authorization = B64Code.decode( proxyAuth );
+                String authorization = B64Code.decode( proxyAuth, StringUtil.__ISO_8859_1 );
                 String[] authTokens = authorization.split( ":" );
                 String user = authTokens[0];
                 String password = authTokens[1];

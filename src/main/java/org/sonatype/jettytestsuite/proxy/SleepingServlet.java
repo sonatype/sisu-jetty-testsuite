@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mortbay.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.DefaultServlet;
 
 public class SleepingServlet
     extends DefaultServlet

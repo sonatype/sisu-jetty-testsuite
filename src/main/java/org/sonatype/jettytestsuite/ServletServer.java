@@ -21,17 +21,17 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.ContextHandlerCollection;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.security.Constraint;
-import org.mortbay.jetty.security.ConstraintMapping;
-import org.mortbay.jetty.security.HashUserRealm;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.security.ConstraintMapping;
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.security.Constraint;
 
 /**
  * The Class ServletServer. Heavily based on Joakim Erfeldt's work in wagon-webdav tests.
@@ -139,7 +139,7 @@ public class ServletServer
         server.setConnectors( new Connector[] { connector } );
         
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
-        getServer().addHandler( contextHandlerCollection );
+        getServer().setHandler( contextHandlerCollection );
 
         if ( getWebappContexts() != null )
         {
@@ -147,16 +147,16 @@ public class ServletServer
             {
                 try
                 {
-                    Context context = null;
+                    ServletContextHandler context = null;
                     if ( webappContext.getAuthenticationInfo() != null )
                     {
-                        context = new Context(
+                        context = new ServletContextHandler(
                             contextHandlerCollection,
                             webappContext.getContextPath(),
-                            Context.SESSIONS | Context.SECURITY );
+                            ServletContextHandler.SESSIONS | ServletContextHandler.SECURITY );
                        
-                        HashUserRealm userRealm = new HashUserRealm( "default" );
-                        userRealm.setConfig( webappContext.getAuthenticationInfo().getCredentialsFilePath() );
+                        HashLoginService loginService = new HashLoginService( "default" );
+                        loginService.setConfig( webappContext.getAuthenticationInfo().getCredentialsFilePath() );
 
                         Constraint constraint = new Constraint(
                             webappContext.getAuthenticationInfo().getAuthMethod(),
@@ -167,18 +167,19 @@ public class ServletServer
                         constraintMapping.setPathSpec( webappContext.getAuthenticationInfo().getAuthPathSpec() );
                         constraintMapping.setConstraint( constraint );
 
-                        context.getSecurityHandler().setUserRealm( userRealm );
-                        context.getSecurityHandler().setAuthMethod(
-                            webappContext.getAuthenticationInfo().getAuthMethod() );
-                        context.getSecurityHandler().setConstraintMappings(
-                            new ConstraintMapping[] { constraintMapping } );
+                        ConstraintSecurityHandler csh = (ConstraintSecurityHandler) context.getSecurityHandler();
+                        
+                        csh.setLoginService( loginService );
+                        csh.setAuthMethod( webappContext.getAuthenticationInfo().getAuthMethod() );
+                        csh.setConstraintMappings( new ConstraintMapping[] { constraintMapping } );
+                        csh.setStrict( false );
                     }
                     else
                     {
-                        context = new Context(
+                        context = new ServletContextHandler(
                             contextHandlerCollection,
                             webappContext.getContextPath(),
-                            Context.SESSIONS | Context.NO_SECURITY );
+                            ServletContextHandler.SESSIONS | ServletContextHandler.NO_SECURITY );
                     }
                     context.setDisplayName( webappContext.getName() );
                    
@@ -211,7 +212,7 @@ public class ServletServer
                     // add the servlet filters
                     for( ServletFilterInfo filterInfo : webappContext.getServletFilterInfos())
                     {
-                        FilterHolder filter = context.addFilter( filterInfo.getFilterClass(), filterInfo.getMapping(), Handler.DEFAULT );
+                        FilterHolder filter = context.addFilter( filterInfo.getFilterClass(), filterInfo.getMapping(), null );
                         // add the init params
                         for ( Map.Entry<Object, Object> entry : filterInfo.getParameters().entrySet() )
                         {
