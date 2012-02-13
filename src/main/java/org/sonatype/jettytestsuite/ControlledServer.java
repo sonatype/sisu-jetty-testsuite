@@ -19,11 +19,11 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.bio.SocketConnector;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.sonatype.jettytestsuite.proxy.FileServerServlet;
 import org.sonatype.jettytestsuite.proxy.StatusServlet;
 import org.sonatype.jettytestsuite.proxy.UnstableFileServerServlet;
@@ -40,7 +40,7 @@ public class ControlledServer
     /** The Constant ROLE. */
     public static final String ROLE = ControlledServer.class.getName();
 
-    private Context context;
+    private ServletContextHandler context;
 
     /** The port. */
     private int port;
@@ -58,7 +58,7 @@ public class ControlledServer
         return port;
     }
 
-    public Context getProxyingContext()
+    public ServletContextHandler getProxyingContext()
     {
         return context;
     }
@@ -89,7 +89,7 @@ public class ControlledServer
         Connector connector = new SocketConnector();
         connector.setPort( getPort() );
         proxy.addConnector( connector );
-        context = new Context( proxy, "/", 0 );
+        context = new ServletContextHandler( proxy, "/", 0 );
         setServer( proxy );
     }
 
