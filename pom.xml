@@ -11,7 +11,7 @@
   <name>Plexus Jetty Testsuite</name>
 
   <properties>
-    <jetty.version>8.1.0.v20120127</jetty.version>
+    <jetty.version>8.1.1.v20120215</jetty.version>
   </properties>
 
   <scm>
