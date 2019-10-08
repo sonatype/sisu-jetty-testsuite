@@ -11,7 +11,7 @@
   <name>Plexus Jetty Testsuite</name>
 
   <properties>
-    <jetty.version>8.1.1.v20120215</jetty.version>
+    <jetty.version>9.4.18.v20190429</jetty.version>
   </properties>
 
   <scm>
@@ -44,6 +44,11 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlets</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-proxy</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>

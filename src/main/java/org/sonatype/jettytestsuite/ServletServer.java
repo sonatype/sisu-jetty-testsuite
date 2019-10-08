@@ -27,7 +27,7 @@ import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.nio.BlockingChannelConnector;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -134,7 +134,7 @@ public class ServletServer
     {
         setServer( new Server() );
 
-        Connector connector = new BlockingChannelConnector();
+        ServerConnector connector = new ServerConnector(server);
         connector.setPort( getPort() );
         server.setConnectors( new Connector[] { connector } );
         
@@ -172,7 +172,6 @@ public class ServletServer
                         csh.setLoginService( loginService );
                         csh.setAuthMethod( webappContext.getAuthenticationInfo().getAuthMethod() );
                         csh.setConstraintMappings( new ConstraintMapping[] { constraintMapping } );
-                        csh.setStrict( false );
                     }
                     else
                     {

@@ -14,7 +14,7 @@ package org.sonatype.jettytestsuite;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.BlockingChannelConnector;
+import org.eclipse.jetty.server.ServerConnector;
 
 /**
  * Jetty {@link Server} that uses {@link BlockingChannelConnector} to avoid hangs on Windows.
@@ -24,7 +24,7 @@ public class BlockingServer
 {
     public BlockingServer( int port )
     {
-        Connector connector = new BlockingChannelConnector();
+        ServerConnector connector = new ServerConnector(this);
         connector.setPort( port );
         setConnectors( new Connector[] { connector } );
     }
