@@ -21,7 +21,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.BlockingChannelConnector;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.sonatype.jettytestsuite.proxy.FileServerServlet;
@@ -86,7 +86,7 @@ public class ControlledServer
         throws InitializationException
     {
         Server proxy = new Server();
-        Connector connector = new BlockingChannelConnector();
+        ServerConnector connector = new ServerConnector(proxy);
         connector.setPort( getPort() );
         proxy.addConnector( connector );
         context = new ServletContextHandler( proxy, "/", 0 );

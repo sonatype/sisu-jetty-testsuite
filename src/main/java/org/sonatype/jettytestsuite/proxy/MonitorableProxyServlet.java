@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.servlets.ProxyServlet;
+import org.eclipse.jetty.proxy.ProxyServlet;
 import org.eclipse.jetty.util.B64Code;
 import org.eclipse.jetty.util.StringUtil;
 
@@ -58,7 +58,7 @@ public class MonitorableProxyServlet
         throws ServletException,
             IOException
     {
-        String uri = ( (Request) req ).getUri().toString();
+        String uri = ( (Request) req ).getHttpURI().toString();
         getAccessedUris().add( uri );
         super.service( req, res );
     }
