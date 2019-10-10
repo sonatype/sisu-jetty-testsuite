@@ -160,7 +160,7 @@ public class ServletServer
 
                         Constraint constraint = new Constraint(
                             webappContext.getAuthenticationInfo().getAuthMethod(),
-                            Constraint.ANY_ROLE );
+                            Constraint.ANY_AUTH );
                         constraint.setAuthenticate( true );
 
                         ConstraintMapping constraintMapping = new ConstraintMapping();
