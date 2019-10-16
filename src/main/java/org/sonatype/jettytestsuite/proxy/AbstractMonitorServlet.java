@@ -50,7 +50,7 @@ public abstract class AbstractMonitorServlet
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String uri = ( (Request) req ).getHttpURI().toString();
+        String uri = ( (Request) req ).getHttpURI().getPathQuery();
         if ( !uri.endsWith( ".sha1" ) && !uri.endsWith( ".md5" ) )
         {
             accessedUrls.add( uri );
@@ -61,7 +61,7 @@ public abstract class AbstractMonitorServlet
 
     protected void addUri( HttpServletRequest req )
     {
-        String uri = ( (Request) req ).getHttpURI().toString();
+        String uri = ( (Request) req ).getHttpURI().getPathQuery();
         if ( !accessedUrls.contains( uri ) )
         {
             accessedUrls.add( uri );
