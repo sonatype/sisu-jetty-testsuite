@@ -17,7 +17,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 
 /**
- * Jetty {@link Server} that uses {@link BlockingChannelConnector} to avoid hangs on Windows.
+ * Jetty {@link Server} that uses {@link ServerConnector} to avoid hangs on Windows.
  */
 public class BlockingServer
     extends Server
