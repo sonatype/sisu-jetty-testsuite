@@ -25,7 +25,7 @@
   <name>Plexus Jetty Testsuite</name>
 
   <properties>
-    <jetty.version>9.4.18.v20190429</jetty.version>
+    <jetty.version>9.4.45.v20220203</jetty.version>
   </properties>
 
   <scm>
